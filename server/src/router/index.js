@@ -1,7 +1,7 @@
 const os = require('os');
 const { Router } = require('express');
 const authRouter = require('../modules/auth/auth.router');
-// const storyRouter = require('../modules/story/story.router');
+const storyRouter = require('../modules/story/story.router');
 
 const appRouter = Router();
 
@@ -17,6 +17,6 @@ appRouter.get('/info', (_, res) => {
 });
 
 appRouter.use('/auth', authRouter);
-// appRouter.use('/story', storyRouter);
+appRouter.use('/story', storyRouter);
 
 module.exports = appRouter;
