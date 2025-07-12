@@ -3,6 +3,7 @@
     "version": "1.0.0",
     "main": "./src/index.js",
     "license": "MIT",
+    "type": "commonjs",
     "scripts": {
         "dev": "tsx watch ./src/index.js",
         "prod": "node ./src/index.js"
