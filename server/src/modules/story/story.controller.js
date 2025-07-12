@@ -16,10 +16,12 @@ class StoryControllers {
 
             const { title, url, tags } = createStoryBody;
 
+            const domainFromURL = new URL(url);
+
             const story = await StoryModel.create({
                 title,
                 url,
-                domain: url.split('/')[0],
+                domain: `${domainFromURL.protocol}//${domainFromURL.hostname}`,
                 tags: tags ?? [],
                 userID: req.session.userID
             });
@@ -47,7 +49,9 @@ class StoryControllers {
             if (!req.session.userID || !req.user)
                 throw new APIError(401, 'Unauthorized request!');
 
-            const stories = await StoryModel.find({});
+            const stories = await StoryModel.find({}).sort({
+                createdAt: -1
+            });
 
             return res.status(200).json({
                 success: true,

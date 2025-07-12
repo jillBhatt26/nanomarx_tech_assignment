@@ -189,7 +189,7 @@ const Signup = () => {
                     disabled={disableButton}
                     className="text-sm bg-[#181818] text-white outline-1 outline-[#333] px-3 py-0.5 hover:cursor-pointer hover:bg-[#202020]"
                 >
-                    Login
+                    Sign up
                 </button>
             </form>
 

@@ -30,7 +30,7 @@ class StoryServices {
     static create = async storyInputs => {
         try {
             const response = await request({
-                url: `${this.STORY_URL}/signup`,
+                url: this.STORY_URL,
                 method: 'POST',
                 data: storyInputs
             });

@@ -1,4 +1,4 @@
-const APIError = require('../common/APIError');
+const { APIError } = require('../common/APIError');
 const AuthModel = require('../modules/auth/auth.model');
 
 const authMiddleware = async (req, res, next) => {
