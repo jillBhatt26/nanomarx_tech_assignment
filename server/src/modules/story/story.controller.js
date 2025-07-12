@@ -2,7 +2,7 @@ const { ValidationError } = require('yup');
 const { APIError } = require('../../common/APIError');
 const AuthModel = require('../auth/auth.model');
 const StoryModel = require('./story.model');
-import { createStoryInputSchema } from './story.validations';
+const { createStoryInputSchema } = require('./story.validations');
 
 class StoryControllers {
     static create = async (req, res, next) => {
