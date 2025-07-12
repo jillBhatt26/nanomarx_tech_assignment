@@ -140,7 +140,7 @@ const Signup = () => {
                 autoComplete="off"
                 noValidate
             >
-                <div className="flex justify-between space-x-5 md:space-x-20">
+                <div className="flex flex-col lg:flex-row justify-between space-x-5 md:space-x-20 space-y-2 lg:space-y-0">
                     <label htmlFor="username">Username:</label>
                     <input
                         type="text"
@@ -151,7 +151,7 @@ const Signup = () => {
                     />
                 </div>
 
-                <div className="flex justify-between space-x-5 md:space-x-20">
+                <div className="flex flex-col lg:flex-row justify-between space-x-5 md:space-x-20 space-y-2 lg:space-y-0">
                     <label htmlFor="email">E-mail:</label>
                     <input
                         type="email"
@@ -162,7 +162,7 @@ const Signup = () => {
                     />
                 </div>
 
-                <div className="flex justify-between space-x-5 md:space-x-20">
+                <div className="flex flex-col lg:flex-row justify-between space-x-5 md:space-x-20 space-y-2 lg:space-y-0">
                     <label htmlFor="password">Password:</label>
                     <input
                         type="password"
@@ -173,7 +173,7 @@ const Signup = () => {
                     />
                 </div>
 
-                <div className="flex justify-between space-x-5 md:space-x-20">
+                <div className="flex flex-col lg:flex-row justify-between space-x-5 md:space-x-20 space-y-2 lg:space-y-0">
                     <label htmlFor="confirm">Confirm Password:</label>
                     <input
                         type="password"

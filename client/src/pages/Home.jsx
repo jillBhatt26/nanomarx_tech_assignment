@@ -105,7 +105,7 @@ const HomePage = () => {
                 noValidate
                 autoComplete="off"
             >
-                <div className="flex justify-between space-x-5 md:space-x-20">
+                <div className="flex flex-col lg:flex-row justify-between space-x-5 md:space-x-20 space-y-2 lg:space-y-0">
                     <label htmlFor="title">Title:</label>
                     <input
                         type="text"
@@ -116,7 +116,7 @@ const HomePage = () => {
                     />
                 </div>
 
-                <div className="flex justify-between space-x-5 md:space-x-20">
+                <div className="flex flex-col lg:flex-row justify-between space-x-5 md:space-x-20 space-y-2 lg:space-y-0">
                     <label htmlFor="url">URL:</label>
                     <input
                         type="text"
@@ -127,7 +127,7 @@ const HomePage = () => {
                     />
                 </div>
 
-                <div className="flex justify-between space-x-5 md:space-x-20">
+                <div className="flex flex-col lg:flex-row justify-between space-x-5 md:space-x-20 space-y-2 lg:space-y-0">
                     <label htmlFor="tags">Tags:</label>
                     <input
                         type="text"

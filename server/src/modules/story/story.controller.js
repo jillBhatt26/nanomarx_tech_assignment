@@ -46,9 +46,6 @@ class StoryControllers {
 
     static fetchStories = async (req, res, next) => {
         try {
-            if (!req.session.userID || !req.user)
-                throw new APIError(401, 'Unauthorized request!');
-
             const stories = await StoryModel.find({}).sort({
                 createdAt: -1
             });
@@ -70,9 +67,6 @@ class StoryControllers {
 
     static searchStories = async (req, res, next) => {
         try {
-            if (!req.session.userID || !req.user)
-                throw new APIError(401, 'Unauthorized request!');
-
             if (!req.query.q)
                 throw new APIError(400, 'Query required to search stories!');
 

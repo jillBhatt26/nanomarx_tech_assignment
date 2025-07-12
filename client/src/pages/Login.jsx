@@ -89,7 +89,7 @@ const LoginPage = () => {
             )}
 
             <form className="space-y-5" onSubmit={handleLogin}>
-                <div className="flex justify-between space-x-5 md:space-x-20">
+                <div className="flex flex-col lg:flex-row justify-between space-x-5 md:space-x-20 space-y-2 lg:space-y-0">
                     <label htmlFor="emailOrUsername">E-mail or Username:</label>
                     <input
                         type="text"
@@ -100,7 +100,7 @@ const LoginPage = () => {
                     />
                 </div>
 
-                <div className="flex justify-between space-x-5 md:space-x-20">
+                <div className="flex flex-col lg:flex-row justify-between space-x-5 md:space-x-20 space-y-2 lg:space-y-0">
                     <label htmlFor="password">Password:</label>
                     <input
                         type="password"

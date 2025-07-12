@@ -1,6 +1,5 @@
 const os = require('os');
 const { Router } = require('express');
-const authMiddleware = require('../middleware/auth');
 const authRouter = require('../modules/auth/auth.router');
 const storyRouter = require('../modules/story/story.router');
 
@@ -18,6 +17,6 @@ appRouter.get('/info', (_, res) => {
 });
 
 appRouter.use('/auth', authRouter);
-appRouter.use('/story', authMiddleware, storyRouter);
+appRouter.use('/story', storyRouter);
 
 module.exports = appRouter;
