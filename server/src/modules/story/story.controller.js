@@ -1,6 +1,5 @@
 const { ValidationError } = require('yup');
 const { APIError } = require('../../common/APIError');
-const AuthModel = require('../auth/auth.model');
 const StoryModel = require('./story.model');
 const { createStoryInputSchema } = require('./story.validations');
 
