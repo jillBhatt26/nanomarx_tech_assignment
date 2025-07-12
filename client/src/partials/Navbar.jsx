@@ -1,8 +1,23 @@
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { AuthServices } from '../services/auth';
+import { setUser } from '../store/slices/auth';
 
 const Navbar = () => {
     // hooks
     const location = useLocation();
+    const authUser = useSelector(state => state.authReducer.user);
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    // event handlers
+    const handleLogout = async () => {
+        await AuthServices.logout();
+
+        dispatch(setUser(null));
+
+        navigate('/login', { replace: true });
+    };
 
     return (
         <div className="pt-3 pb-3 flex justify-center md:justify-between space-x-2 lg:space-x-5 px-2 lg:px-0 bg-[#202020] sm:bg-black">
@@ -58,16 +73,26 @@ const Navbar = () => {
             </ul>
 
             {/* Login */}
-            <Link
-                to="/login"
-                className={`space-x-4 text-[14px] font-semibold text-[#FFFFFFB0] ${
-                    location.pathname === '/login'
-                        ? 'border-b-3 border-orange-700'
-                        : 'border-b-3 border-transparent'
-                }`}
-            >
-                Login
-            </Link>
+            {authUser ? (
+                <button
+                    type="button"
+                    className="space-x-4 text-[14px] font-semibold text-[#FFFFFFB0] hover:cursor-pointer"
+                    onClick={handleLogout}
+                >
+                    Logout
+                </button>
+            ) : (
+                <Link
+                    to="/login"
+                    className={`space-x-4 text-[14px] font-semibold text-[#FFFFFFB0] ${
+                        location.pathname === '/login'
+                            ? 'border-b-3 border-orange-700'
+                            : 'border-b-3 border-transparent'
+                    }`}
+                >
+                    Login
+                </Link>
+            )}
         </div>
     );
 };

@@ -70,8 +70,6 @@ const LoginPage = () => {
 
             setLoginError(error);
         } catch (error) {
-            console.log('1..');
-
             if (error instanceof yup.ValidationError)
                 setLoginError(error.message);
             else setLoginError(error.error ?? 'Failed to login the user');
