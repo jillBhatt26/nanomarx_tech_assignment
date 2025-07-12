@@ -20,7 +20,7 @@ const Navbar = () => {
     };
 
     return (
-        <div className="pt-3 pb-3 flex justify-center md:justify-between space-x-2 lg:space-x-5 px-2 lg:px-0 bg-[#202020] sm:bg-black">
+        <div className="pt-3 pb-3 flex  md:justify-between space-x-2 lg:space-x-5 px-2 lg:px-0 bg-[#202020] sm:bg-black">
             {/* Logo */}
             <Link to="/">
                 <h1 className="uppercase font-serif text-md text-white bg-[#500000] inline-block px-2">
@@ -73,26 +73,28 @@ const Navbar = () => {
             </ul>
 
             {/* Login */}
-            {authUser ? (
-                <button
-                    type="button"
-                    className="space-x-4 text-[14px] font-semibold text-[#FFFFFFB0] hover:cursor-pointer"
-                    onClick={handleLogout}
-                >
-                    Logout
-                </button>
-            ) : (
-                <Link
-                    to="/login"
-                    className={`space-x-4 text-[14px] font-semibold text-[#FFFFFFB0] ${
-                        location.pathname === '/login'
-                            ? 'border-b-3 border-orange-700'
-                            : 'border-b-3 border-transparent'
-                    }`}
-                >
-                    Login
-                </Link>
-            )}
+            <div className="flex-1 flex justify-end">
+                {authUser ? (
+                    <button
+                        type="button"
+                        className="space-x-4 text-[14px] font-semibold text-[#FFFFFFB0] hover:cursor-pointer"
+                        onClick={handleLogout}
+                    >
+                        Logout
+                    </button>
+                ) : (
+                    <Link
+                        to="/login"
+                        className={`space-x-4 mt-0.5 md:mt-0 text-[14px] font-semibold text-[#FFFFFFB0] ${
+                            location.pathname === '/login'
+                                ? 'border-b-3 border-orange-700'
+                                : 'border-b-3 border-transparent'
+                        }`}
+                    >
+                        Login
+                    </Link>
+                )}
+            </div>
         </div>
     );
 };
