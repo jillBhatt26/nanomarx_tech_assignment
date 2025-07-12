@@ -99,4 +99,4 @@ class StoryControllers {
     };
 }
 
-export { StoryControllers };
+module.exports = { StoryControllers };

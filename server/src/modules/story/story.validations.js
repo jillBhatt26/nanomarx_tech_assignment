@@ -16,4 +16,4 @@ const createStoryInputSchema = yup.object({
     tags: yup.array().of(yup.string())
 });
 
-export { createStoryInputSchema };
+module.exports = { createStoryInputSchema };
