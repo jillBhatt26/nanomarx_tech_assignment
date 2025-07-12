@@ -10,6 +10,7 @@ import RecentPage from '../pages/Recent';
 import SearchPage from '../pages/Search';
 import LoginPage from '../pages/Login';
 import SignupPage from '../pages/Signup';
+import ErrorPage from '../pages/Error';
 
 const AppRouter = () => {
     return (
@@ -32,6 +33,7 @@ const AppRouter = () => {
                     </Route>
 
                     {/* Error */}
+                    <Route path="*" element={<ErrorPage />} />
                 </Route>
             </Routes>
         </BrowserRouter>
