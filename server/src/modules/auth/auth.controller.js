@@ -1,5 +1,5 @@
 const { ValidationError } = require('yup');
-const APIError = require('../../common/APIError');
+const { APIError } = require('../../common/APIError');
 const destroySession = require('./session.utils');
 const AuthModel = require('./auth.model');
 const PasswordUtils = require('./password.utils');
@@ -93,8 +93,8 @@ class AuthControllers {
 
             const userToLogin = await AuthModel.findOne({
                 $or: [
-                    { username: loginRequestBody.usernameOrEmail },
-                    { email: loginRequestBody.usernameOrEmail }
+                    { username: loginRequestBody.emailOrUsername },
+                    { email: loginRequestBody.emailOrUsername }
                 ]
             });
 

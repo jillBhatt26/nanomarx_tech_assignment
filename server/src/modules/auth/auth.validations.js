@@ -31,7 +31,7 @@ const signupRequestBodySchema = yup.object({
 });
 
 const loginRequestBodySchema = yup.object({
-    usernameOrEmail: yup
+    emailOrUsername: yup
         .string('Username or email must be a string')
         .trim()
         .required('Either username or email is required')

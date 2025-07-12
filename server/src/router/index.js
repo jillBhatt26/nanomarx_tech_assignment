@@ -15,6 +15,6 @@ appRouter.get('/info', (_, res) => {
     });
 });
 
-appRouter.get('/auth', authRouter);
+appRouter.use('/auth', authRouter);
 
 module.exports = appRouter;
