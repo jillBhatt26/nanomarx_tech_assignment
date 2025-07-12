@@ -17,6 +17,6 @@ appRouter.get('/info', (_, res) => {
 });
 
 appRouter.use('/auth', authRouter);
-appRouter.use('/story', storyRouter);
+// appRouter.use('/story', storyRouter);
 
 module.exports = appRouter;
