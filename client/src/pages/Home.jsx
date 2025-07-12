@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import * as yup from 'yup';
+import Story from '../components/Story';
 import { StoryServices } from '../services/story';
 
 const HomePage = () => {
@@ -85,8 +86,10 @@ const HomePage = () => {
 
     return (
         <div className="px-5 md:pl-12 mt-5 md:mt-0">
+            {/* Title */}
             <h1 className="text mb-5">Create new story</h1>
 
+            {/* Error messages */}
             {createStoryError && (
                 <p className="bg-[#451714] text-[#FFFFFFDE] w-full rounded-sm py-2 px-5 my-5 border-t border-[#626262]">
                     {createStoryError}
@@ -99,6 +102,7 @@ const HomePage = () => {
                 </p>
             )}
 
+            {/* Create Story Form */}
             <form
                 className="space-y-5"
                 onSubmit={handleCreateStory}
@@ -146,6 +150,15 @@ const HomePage = () => {
                     Create
                 </button>
             </form>
+
+            {/* Stories */}
+            {stories.length > 0 && (
+                <ul className="mt-5">
+                    {stories.map((story, idx) => (
+                        <Story key={story._id ?? idx} story={story} />
+                    ))}
+                </ul>
+            )}
         </div>
     );
 };
