@@ -46,7 +46,8 @@ class StoryControllers {
     static fetchStoryID = async (req, res, next) => {
         try {
             const story = await StoryServices.fetchStoryDetailsByID(
-                req.params.id
+                req.params.id,
+                req.session.userID ?? undefined
             );
 
             return res.status(200).json({
@@ -69,7 +70,8 @@ class StoryControllers {
             const stories = await StoryServices.queryStories();
 
             const storiesFullInfo = await StoryServices.fetchStoriesFullInfo(
-                stories
+                stories,
+                req.session.userID ?? undefined
             );
 
             return res.status(200).json({

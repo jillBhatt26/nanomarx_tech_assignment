@@ -2,6 +2,7 @@ const { APIError } = require('../../common/APIError');
 const StoryModel = require('./story.model');
 const AuthModel = require('../auth/auth.model');
 const CommentModel = require('../comments/comment.model');
+const VoteModel = require('../vote/vote.model');
 
 class StoryServices {
     static queryStories = async (find = undefined, sort = undefined) => {
@@ -58,19 +59,24 @@ class StoryServices {
         }
     };
 
-    static fetchStoriesFullInfo = async stories => {
+    static fetchStoriesFullInfo = async (stories, userID = undefined) => {
         try {
             const storiesFullInfo = await Promise.all(
                 stories.map(async story => {
-                    const [authUsername, count] = await Promise.all([
-                        AuthModel.findById(story.userID).select('username'),
-                        CommentModel.countDocuments({ storyID: story._id })
-                    ]);
+                    const [authUsername, totalComments, totalVotes, userVote] =
+                        await Promise.all([
+                            AuthModel.findById(story.userID).select('username'),
+                            CommentModel.countDocuments({ storyID: story._id }),
+                            VoteModel.countDocuments({ storyID: story._id }),
+                            VoteModel.findOne({ storyID: story._id, userID })
+                        ]);
 
                     return {
                         ...story.toObject(),
                         username: authUsername.username,
-                        totalComments: count
+                        totalComments,
+                        totalVotes,
+                        hasUserVoted: userVote !== null ?? false
                     };
                 })
             );
@@ -86,19 +92,24 @@ class StoryServices {
         }
     };
 
-    static fetchStoryDetailsByID = async storyID => {
+    static fetchStoryDetailsByID = async (storyID, userID = undefined) => {
         try {
             const story = await StoryModel.findById(storyID);
 
-            const [authUsername, count] = await Promise.all([
-                AuthModel.findById(story.userID).select('username'),
-                CommentModel.countDocuments({ storyID })
-            ]);
+            const [authUsername, totalComments, totalVotes, userVote] =
+                await Promise.all([
+                    AuthModel.findById(story.userID).select('username'),
+                    CommentModel.countDocuments({ storyID }),
+                    VoteModel.countDocuments({ storyID }),
+                    VoteModel.findOne({ storyID, userID })
+                ]);
 
             return {
                 ...story.toObject(),
                 username: authUsername.username,
-                totalComments: count
+                totalComments,
+                totalVotes,
+                hasUserVoted: userVote !== null ?? false
             };
         } catch (error) {
             if (error instanceof APIError) throw error;

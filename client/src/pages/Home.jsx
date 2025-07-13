@@ -31,9 +31,6 @@ const HomePage = () => {
             setFetchStoriesError(error);
         } finally {
             setLoading(false);
-            setInputTags('');
-            setInputTitle('');
-            setInputURL('');
         }
     }, []);
 
@@ -101,6 +98,10 @@ const HomePage = () => {
                 setCreateStoryError(
                     error.error ?? 'Failed to create new story'
                 );
+        } finally {
+            setInputTags('');
+            setInputTitle('');
+            setInputURL('');
         }
     };
 

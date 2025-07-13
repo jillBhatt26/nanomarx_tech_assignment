@@ -1,24 +1,65 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import { BsFillTriangleFill } from 'react-icons/bs';
 import { IoTriangleOutline } from 'react-icons/io5';
 import useTimeInfo from '../hooks/useTimeInfo';
+import { VoteServices } from '../services/vote';
 
 const Story = ({ story }) => {
     const [isHovered, setIsHovered] = useState(false);
+    const [hasVoted, setHasVoted] = useState(story.hasUserVoted);
+    const [totalVotes, setTotalVotes] = useState(story.totalVotes);
 
     // hooks
     const timeInfo = useTimeInfo(story.createdAt);
+    const authUser = useSelector(state => state.authReducer.user);
+
+    const navigate = useNavigate();
+
+    // event handlers
+    const handleVote = async () => {
+        if (!authUser) return navigate('/login');
+
+        try {
+            if (story.hasUserVoted) {
+                // remove vote
+                const removeVoteResData = await VoteServices.removeVote(
+                    story._id
+                );
+
+                const { success, error } = removeVoteResData;
+
+                if (!success && error) alert(error);
+
+                setTotalVotes(--story.totalVotes);
+                return setHasVoted(false);
+            }
+
+            // add vote
+            const addVoteResData = await VoteServices.addVote(story._id);
+
+            const { success, error, data } = addVoteResData;
+
+            if (!success && error) alert(error);
+
+            setTotalVotes(++story.totalVotes);
+            if (success && data && data.vote) return setHasVoted(true);
+        } catch (error) {
+            alert(error.message ?? 'Failed to carry out vote action!');
+        }
+    };
 
     return (
         <div className="flex space-x-4 my-2">
             <div className="flex flex-col">
-                <div
-                    className="w-5 h-5 mx-auto flex justify-center"
+                <button
+                    className="w-5 h-5 mx-auto flex justify-center mt-1"
                     onMouseEnter={() => setIsHovered(true)}
                     onMouseLeave={() => setIsHovered(false)}
+                    onClick={handleVote}
                 >
-                    {isHovered ? (
+                    {isHovered || hasVoted ? (
                         <BsFillTriangleFill
                             width={5}
                             height={5}
@@ -31,9 +72,9 @@ const Story = ({ story }) => {
                             className="text-white cursor-pointer mx-auto"
                         />
                     )}
-                </div>
+                </button>
 
-                <p className="text-center mx-auto">0</p>
+                <p className="text-center mx-auto">{totalVotes ?? 0}</p>
             </div>
 
             <div className="flex flex-col">
