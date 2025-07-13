@@ -15,6 +15,18 @@ class StoryServices {
         }
     };
 
+    static fetchStoriesActive = async () => {
+        try {
+            const response = await request({
+                url: `${this.STORY_URL}/active`
+            });
+
+            return response.data;
+        } catch (error) {
+            return error.response.data;
+        }
+    };
+
     static fetchStoryID = async storyID => {
         try {
             const response = await request({

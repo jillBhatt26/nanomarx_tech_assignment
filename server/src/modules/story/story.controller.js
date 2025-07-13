@@ -87,6 +87,25 @@ class StoryControllers {
         }
     };
 
+    static fetchStoriesActive = async (req, res, next) => {
+        try {
+            const activeStories = await StoryServices.fetchStoriesActive();
+
+            return res.status(200).json({
+                success: true,
+                data: {
+                    stories: activeStories
+                }
+            });
+        } catch (error) {
+            if (error instanceof APIError) return next(error);
+
+            return next(
+                new APIError(500, 'Error occurred while fetching stories.')
+            );
+        }
+    };
+
     static searchStories = async (req, res, next) => {
         try {
             if (!req.query.q)

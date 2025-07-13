@@ -8,6 +8,8 @@ storyRouter.get('/', StoryControllers.fetchStories);
 
 storyRouter.post('/', authMiddleware, StoryControllers.create);
 
+storyRouter.get('/active', StoryControllers.fetchStoriesActive);
+
 storyRouter.get('/search', StoryControllers.searchStories);
 
 storyRouter.get('/:id', StoryControllers.fetchStoryID);

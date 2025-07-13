@@ -109,6 +109,48 @@ class StoryServices {
             );
         }
     };
+
+    static fetchStoriesActive = async () => {
+        try {
+            // get all stories which have at least 1 comment
+            const activeStories = await StoryModel.aggregate([
+                {
+                    $lookup: {
+                        from: 'comments',
+                        localField: '_id',
+                        foreignField: 'storyID',
+                        as: 'comments'
+                    }
+                },
+                { $match: { comments: { $ne: [] } } },
+                { $sort: { createdAt: -1 } }
+            ]);
+
+            // get full info of the stories
+            const activeStoriesFullInfo = await Promise.all(
+                activeStories.map(async story => {
+                    const authDoc = await AuthModel.findById(
+                        story.userID
+                    ).select('username');
+
+                    return {
+                        ...story,
+                        username: authDoc.username,
+                        totalComments: story.comments.length
+                    };
+                })
+            );
+
+            return activeStoriesFullInfo;
+        } catch (error) {
+            if (error instanceof APIError) throw error;
+
+            throw new APIError(
+                500,
+                error.message ?? 'Failed to fetch active stories!'
+            );
+        }
+    };
 }
 
 module.exports = { StoryServices };
