@@ -18,10 +18,6 @@ const StoryDetailsPage = () => {
     const [comments, setComments] = useState([]);
     const [fetchCommentsError, setFetchCommentsError] = useState(null);
 
-    useEffect(() => {
-        console.log('story: ', story);
-    }, [story]);
-
     // hooks
     const { id } = useParams();
     const authUser = useSelector(state => state.authReducer.user);
@@ -107,7 +103,13 @@ const StoryDetailsPage = () => {
                     ...story,
                     totalComments: ++story.totalComments
                 });
-                setComments([data.comment, ...comments]);
+                setComments([
+                    {
+                        ...data.comment,
+                        username: authUser.user.username
+                    },
+                    ...comments
+                ]);
             }
 
             setCreateCommentError(error);
