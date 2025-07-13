@@ -1,7 +1,6 @@
 const { ValidationError } = require('yup');
 const { APIError } = require('../../common/APIError');
-const AuthModel = require('../auth/auth.model');
-const StoryModel = require('./story.model');
+const { StoryServices } = require('./story.services');
 const { createStoryInputSchema } = require('./story.validations');
 
 class StoryControllers {
@@ -18,7 +17,7 @@ class StoryControllers {
 
             const domainFromURL = new URL(url);
 
-            const story = await StoryModel.create({
+            const story = await StoryServices.createStory({
                 title,
                 url,
                 domain: `${domainFromURL.protocol}//${domainFromURL.hostname}`,
@@ -46,34 +45,16 @@ class StoryControllers {
 
     static fetchStories = async (req, res, next) => {
         try {
-            const stories = await StoryModel.find({}).sort({
-                createdAt: -1
-            });
+            const stories = await StoryServices.queryStories();
 
-            const storiesWithUsername = await Promise.all(
-                stories.map(async story => {
-                    try {
-                        const authUsername = await AuthModel.findById(
-                            story.userID
-                        ).select('username');
-
-                        return {
-                            ...story.toObject(),
-                            username: authUsername.username
-                        };
-                    } catch (error) {
-                        throw new APIError(
-                            500,
-                            error.message ?? 'Failed to fetch stories!'
-                        );
-                    }
-                })
+            const storiesFullInfo = await StoryServices.fetchStoriesFullInfo(
+                stories
             );
 
             return res.status(200).json({
                 success: true,
                 data: {
-                    stories: storiesWithUsername
+                    stories: storiesFullInfo
                 }
             });
         } catch (error) {
@@ -90,7 +71,7 @@ class StoryControllers {
             if (!req.query.q)
                 throw new APIError(400, 'Query required to search stories!');
 
-            const stories = await StoryModel.find({
+            const stories = await StoryServices.queryStories({
                 $or: [
                     {
                         title: { $regex: req.query.q, $options: 'i' }
