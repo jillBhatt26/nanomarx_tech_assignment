@@ -33,7 +33,7 @@ const RecentPage = () => {
     if (loading) return <Loader />;
 
     return (
-        <div>
+        <div className="px-5 md:px-0">
             {/* error message */}
             {fetchStoriesError && (
                 <p className="bg-[#451714] text-[#FFFFFFDE] w-full rounded-sm py-2 px-5 my-5 border-t border-[#626262]">

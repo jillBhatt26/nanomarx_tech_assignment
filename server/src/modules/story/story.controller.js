@@ -85,10 +85,14 @@ class StoryControllers {
                 ]
             });
 
+            const storiesFullInfo = await StoryServices.fetchStoriesFullInfo(
+                stories
+            );
+
             return res.status(200).json({
                 success: true,
                 data: {
-                    stories
+                    stories: storiesFullInfo
                 }
             });
         } catch (error) {

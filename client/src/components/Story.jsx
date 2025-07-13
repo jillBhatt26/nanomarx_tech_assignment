@@ -88,9 +88,12 @@ const Story = ({ story }) => {
                     )}
 
                     {/* Domain */}
-                    <p className="italic font-thin text-[14px] text-[#FFFFFFB0]">
-                        {story.domain}
-                    </p>
+                    <a
+                        href={story.domain}
+                        className="italic font-thin text-[14px] text-[#FFFFFFB0]"
+                    >
+                        {story.domain.split('/').pop()}
+                    </a>
                 </div>
 
                 <div className="flex flex-wrap space-x-2">
