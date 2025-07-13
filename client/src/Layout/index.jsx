@@ -4,7 +4,7 @@ import Footer from '../partials/Footer';
 
 const AppLayout = () => {
     return (
-        <div className="bg-black text-white w-screen h-screen">
+        <div className="bg-black text-white min-w-screen min-h-screen w-lvw h-lvh overflow-auto">
             <div className="w-full lg:w-11/12 lg:px-5 xl:w-8/12 2xl:w-1/2 xl:px-10 mx-auto">
                 <Navbar />
 
