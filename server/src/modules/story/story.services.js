@@ -121,7 +121,7 @@ class StoryServices {
         }
     };
 
-    static fetchStoriesActive = async () => {
+    static fetchStoriesActive = async (userID = undefined) => {
         try {
             // get all stories which have at least 1 comment
             const activeStories = await StoryModel.aggregate([
@@ -141,14 +141,18 @@ class StoryServices {
             // get full info of the stories
             const activeStoriesFullInfo = await Promise.all(
                 activeStories.map(async story => {
-                    const authDoc = await AuthModel.findById(
-                        story.userID
-                    ).select('username');
+                    const [authDoc, totalVotes, userVote] = await Promise.all([
+                        AuthModel.findById(story.userID).select('username'),
+                        VoteModel.countDocuments({ storyID: story._id }),
+                        VoteModel.findOne({ storyID: story._id, userID })
+                    ]);
 
                     return {
                         ...story,
                         username: authDoc.username,
-                        totalComments: story.comments.length
+                        totalComments: story.comments.length,
+                        totalVotes,
+                        hasUserVoted: userVote !== null ?? false
                     };
                 })
             );
