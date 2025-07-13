@@ -18,6 +18,10 @@ const StoryDetailsPage = () => {
     const [comments, setComments] = useState([]);
     const [fetchCommentsError, setFetchCommentsError] = useState(null);
 
+    useEffect(() => {
+        console.log('story: ', story);
+    }, [story]);
+
     // hooks
     const { id } = useParams();
     const authUser = useSelector(state => state.authReducer.user);
@@ -125,7 +129,7 @@ const StoryDetailsPage = () => {
 
     return (
         <div className="px-5 md:px-0">
-            <Story story={story} />
+            {story && <Story story={story} />}
 
             {createCommentError && (
                 <p className="bg-[#451714] text-[#FFFFFFDE] w-full rounded-sm py-2 px-5 my-5 border-t border-[#626262]">
