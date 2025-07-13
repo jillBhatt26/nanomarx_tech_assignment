@@ -31,6 +31,9 @@ const HomePage = () => {
             setFetchStoriesError(error);
         } finally {
             setLoading(false);
+            setInputTags('');
+            setInputTitle('');
+            setInputURL('');
         }
     }, []);
 
@@ -81,7 +84,11 @@ const HomePage = () => {
 
             if (success && data && data.story) {
                 return setStories([
-                    { ...data.story, username: authUser.username },
+                    {
+                        ...data.story,
+                        username: authUser.username,
+                        totalComments: 0
+                    },
                     ...stories
                 ]);
             }

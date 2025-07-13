@@ -52,6 +52,7 @@ const StoryDetailsPage = () => {
             setFetchCommentsError(error);
         } finally {
             setIsLoading(false);
+            setInputCommentText('');
         }
     }, [id]);
 
