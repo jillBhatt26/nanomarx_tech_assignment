@@ -1,6 +1,7 @@
 const { ValidationError } = require('yup');
 const { APIError } = require('../../common/APIError');
 const AuthModel = require('../auth/auth.model');
+const StoryModel = require('../story/story.model');
 const CommentModel = require('./comment.model');
 const {
     createCommentInputsSchema,
@@ -49,10 +50,25 @@ class CommentControllers {
                 createdAt: -1
             });
 
+            const commentsDetails = await Promise.all(
+                comments.map(async comment => {
+                    const [auth, story] = await Promise.all([
+                        AuthModel.findById(comment.userID).select('username'),
+                        StoryModel.findById(comment.storyID).select('title')
+                    ]);
+
+                    return {
+                        ...comment.toObject(),
+                        username: auth.username,
+                        storyTitle: story.title
+                    };
+                })
+            );
+
             return res.status(200).json({
                 success: true,
                 data: {
-                    comments
+                    comments: commentsDetails
                 }
             });
         } catch (error) {
@@ -113,10 +129,25 @@ class CommentControllers {
                 createdAt: -1
             });
 
+            const commentsDetails = await Promise.all(
+                comments.map(async comment => {
+                    const [auth, story] = await Promise.all([
+                        AuthModel.findById(comment.userID).select('username'),
+                        StoryModel.findById(comment.storyID).select('title')
+                    ]);
+
+                    return {
+                        ...comment.toObject(),
+                        username: auth.username,
+                        storyTitle: story.title
+                    };
+                })
+            );
+
             return res.status(200).json({
                 success: true,
                 data: {
-                    comments
+                    comments: commentsDetails
                 }
             });
         } catch (error) {

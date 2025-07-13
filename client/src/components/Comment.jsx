@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { BsFillTriangleFill } from 'react-icons/bs';
 import { IoTriangleOutline } from 'react-icons/io5';
 import useTimeInfo from '../hooks/useTimeInfo';
@@ -44,6 +45,15 @@ const Comment = ({ comment }) => {
                     <small className="text-[#ddd]">
                         {comment.username} {timeInfo}
                     </small>
+
+                    {comment.storyTitle && (
+                        <small className="text-[#ddd] border-l border-[#ddd] px-2">
+                            on:{' '}
+                            <Link to={`/s/${comment.storyID}`}>
+                                {comment.storyTitle}
+                            </Link>
+                        </small>
+                    )}
                 </div>
                 <h1 className="mt-1">{comment.text}</h1>
             </div>

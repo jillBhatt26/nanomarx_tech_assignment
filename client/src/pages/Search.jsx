@@ -1,7 +1,9 @@
 import { useEffect, useMemo, useState } from 'react';
 import * as yup from 'yup';
 import Story from '../components/Story';
+import Comment from '../components/Comment';
 import { StoryServices } from '../services/story';
+import { CommentServices } from '../services/comment';
 
 const SearchPage = () => {
     const [inputQuery, setInputQuery] = useState('');
@@ -63,6 +65,20 @@ const SearchPage = () => {
 
                 if (success && data && data.stories) {
                     setResults(data.stories);
+                }
+
+                setSearchError(error);
+            }
+
+            if (searchWhere === 'comments') {
+                const searchResponseData = await CommentServices.searchComment(
+                    searchInputs.q
+                );
+
+                const { success, data, error } = searchResponseData;
+
+                if (success && data && data.comments) {
+                    setResults(data.comments);
                 }
 
                 setSearchError(error);
@@ -142,6 +158,16 @@ const SearchPage = () => {
                     <ul className="mt-5">
                         {results.map((result, idx) => (
                             <Story key={result._id ?? idx} story={result} />
+                        ))}
+                    </ul>
+                )}
+
+            {hasFinishedSearch &&
+                searchWhere === 'comments' &&
+                results.length > 0 && (
+                    <ul className="mt-5">
+                        {results.map((result, idx) => (
+                            <Comment key={result._id ?? idx} comment={result} />
                         ))}
                     </ul>
                 )}
