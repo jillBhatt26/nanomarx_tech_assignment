@@ -21,7 +21,8 @@ const AppRoute = ({ blockAuthenticated = false }) => {
         try {
             const fetchUserData = await AuthServices.active();
 
-            if (fetchUserData.success) dispatch(setUser(fetchUserData.data));
+            if (fetchUserData.success)
+                dispatch(setUser(fetchUserData.data.user));
         } catch (error) {
             setError(error);
         } finally {

@@ -81,7 +81,7 @@ const HomePage = () => {
 
             if (success && data && data.story) {
                 return setStories([
-                    { ...data.story, username: authUser.user.username },
+                    { ...data.story, username: authUser.username },
                     ...stories
                 ]);
             }
