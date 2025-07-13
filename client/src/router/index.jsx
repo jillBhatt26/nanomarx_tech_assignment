@@ -10,6 +10,7 @@ import RecentPage from '../pages/Recent';
 import SearchPage from '../pages/Search';
 import LoginPage from '../pages/Login';
 import SignupPage from '../pages/Signup';
+import StoryDetailsPage from '../pages/StoryDetails';
 import ErrorPage from '../pages/Error';
 
 const AppRouter = () => {
@@ -24,6 +25,7 @@ const AppRouter = () => {
                         <Route path="/recent" element={<RecentPage />} />
                         <Route path="/comments" element={<CommentPage />} />
                         <Route path="/search" element={<SearchPage />} />
+                        <Route path="/s/:id" element={<StoryDetailsPage />} />
                     </Route>
 
                     {/* Public Auth Blocked Routes */}

@@ -7,7 +7,11 @@ const createCommentInputsSchema = yup
             .trim()
             .required('Text is required')
             .min(4, 'Text must be minimum 4 characters')
-            .max(255, 'Text must be maximum 255 characters long')
+            .max(255, 'Text must be maximum 255 characters long'),
+        storyID: yup
+            .string('Story info must be a string')
+            .trim()
+            .required('Story info is required')
     })
     .stripUnknown();
 

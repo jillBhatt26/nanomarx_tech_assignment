@@ -1,5 +1,6 @@
 const { ValidationError } = require('yup');
 const { APIError } = require('../../common/APIError');
+const AuthModel = require('../auth/auth.model');
 const CommentModel = require('./comment.model');
 const {
     createCommentInputsSchema,
@@ -16,9 +17,12 @@ class CommentControllers {
                 req.body
             );
 
+            const { text, storyID } = createCommentBody;
+
             const comment = await CommentModel.create({
-                text: createCommentBody.text,
-                userID: req.session.userID
+                text,
+                userID: req.session.userID,
+                storyID
             });
 
             return res.status(200).json({
@@ -49,6 +53,42 @@ class CommentControllers {
                 success: true,
                 data: {
                     comments
+                }
+            });
+        } catch (error) {
+            if (error instanceof APIError) return next(error);
+
+            return next(
+                new APIError(500, 'Error occurred while fetching stories.')
+            );
+        }
+    };
+
+    static fetchStoryComments = async (req, res, next) => {
+        try {
+            const comments = await CommentModel.find({
+                storyID: req.params.storyID
+            }).sort({
+                createdAt: -1
+            });
+
+            const commentsWithUsername = await Promise.all(
+                comments.map(async comment => {
+                    const auth = await AuthModel.findById(
+                        comment.userID
+                    ).select('username');
+
+                    return {
+                        ...comment.toObject(),
+                        username: auth.username
+                    };
+                })
+            );
+
+            return res.status(200).json({
+                success: true,
+                data: {
+                    comments: commentsWithUsername
                 }
             });
         } catch (error) {

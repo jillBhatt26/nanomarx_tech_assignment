@@ -10,4 +10,6 @@ commentRouter.post('/', authMiddleware, CommentControllers.create);
 
 commentRouter.get('/search', CommentControllers.searchComments);
 
+commentRouter.get('/story/:storyID', CommentControllers.fetchStoryComments);
+
 module.exports = commentRouter;

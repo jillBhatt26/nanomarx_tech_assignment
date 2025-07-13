@@ -1,12 +1,12 @@
 import { request } from '../config/axios';
 
-class StoryServices {
-    static STORY_URL = '/story';
+class CommentServices {
+    static COMMENT_URL = '/comment';
 
-    static fetchStories = async () => {
+    static fetchComments = async () => {
         try {
             const response = await request({
-                url: this.STORY_URL
+                url: this.COMMENT_URL
             });
 
             return response.data;
@@ -15,10 +15,10 @@ class StoryServices {
         }
     };
 
-    static fetchStoryID = async storyID => {
+    static fetchStoryComments = async storyID => {
         try {
             const response = await request({
-                url: `${this.STORY_URL}/${storyID}`
+                url: `${this.COMMENT_URL}/story/${storyID}`
             });
 
             return response.data;
@@ -27,10 +27,10 @@ class StoryServices {
         }
     };
 
-    static searchStories = async q => {
+    static searchComment = async q => {
         try {
             const response = await request({
-                url: `${this.STORY_URL}/search?q=${q}`
+                url: `${this.COMMENT_URL}/search?q=${q}`
             });
 
             return response.data;
@@ -39,12 +39,12 @@ class StoryServices {
         }
     };
 
-    static create = async storyInputs => {
+    static create = async createCommentInputs => {
         try {
             const response = await request({
-                url: this.STORY_URL,
+                url: this.COMMENT_URL,
                 method: 'POST',
-                data: storyInputs
+                data: createCommentInputs
             });
 
             return response.data;
@@ -54,4 +54,4 @@ class StoryServices {
     };
 }
 
-export { StoryServices };
+export { CommentServices };

@@ -85,6 +85,30 @@ class StoryServices {
             );
         }
     };
+
+    static fetchStoryDetailsByID = async storyID => {
+        try {
+            const story = await StoryModel.findById(storyID);
+
+            const [authUsername, count] = await Promise.all([
+                AuthModel.findById(story.userID).select('username'),
+                CommentModel.countDocuments({ storyID })
+            ]);
+
+            return {
+                ...story.toObject(),
+                username: authUsername.username,
+                totalComments: count
+            };
+        } catch (error) {
+            if (error instanceof APIError) throw error;
+
+            throw new APIError(
+                500,
+                error.message ?? 'Failed to fetch story details!'
+            );
+        }
+    };
 }
 
 module.exports = { StoryServices };

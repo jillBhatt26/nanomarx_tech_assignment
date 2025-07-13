@@ -10,4 +10,6 @@ storyRouter.post('/', authMiddleware, StoryControllers.create);
 
 storyRouter.get('/search', StoryControllers.searchStories);
 
+storyRouter.get('/:id', StoryControllers.fetchStoryID);
+
 module.exports = storyRouter;

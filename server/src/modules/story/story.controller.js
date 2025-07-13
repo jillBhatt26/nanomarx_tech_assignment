@@ -43,6 +43,27 @@ class StoryControllers {
         }
     };
 
+    static fetchStoryID = async (req, res, next) => {
+        try {
+            const story = await StoryServices.fetchStoryDetailsByID(
+                req.params.id
+            );
+
+            return res.status(200).json({
+                success: true,
+                data: {
+                    story
+                }
+            });
+        } catch (error) {
+            if (error instanceof APIError) return next(error);
+
+            return next(
+                new APIError(500, 'Error occurred while fetching story.')
+            );
+        }
+    };
+
     static fetchStories = async (req, res, next) => {
         try {
             const stories = await StoryServices.queryStories();
