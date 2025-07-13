@@ -37,7 +37,7 @@ const Story = ({ story }) => {
     }, [story]);
 
     return (
-        <div className="flex space-x-4">
+        <div className="flex space-x-4 my-2">
             <div className="flex flex-col">
                 <div
                     className="w-5 h-5 mx-auto flex justify-center"

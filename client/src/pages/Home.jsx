@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useSelector } from 'react-redux';
 import * as yup from 'yup';
 import Story from '../components/Story';
 import { StoryServices } from '../services/story';
@@ -11,6 +12,9 @@ const HomePage = () => {
     const [createStoryError, setCreateStoryError] = useState(null);
     const [fetchStoriesError, setFetchStoriesError] = useState(null);
     const [stories, setStories] = useState([]);
+
+    // hooks
+    const authUser = useSelector(state => state.authReducer.user);
 
     // callbacks
     const fetchStoriesCB = useCallback(async () => {
@@ -65,12 +69,17 @@ const HomePage = () => {
                 tags: tagsArray
             });
 
-            const loginResData = await StoryServices.create(createStoryInputs);
+            const createStoryResponseData = await StoryServices.create(
+                createStoryInputs
+            );
 
-            const { success, data, error } = loginResData;
+            const { success, data, error } = createStoryResponseData;
 
             if (success && data && data.story) {
-                return setStories([data.story, ...stories]);
+                return setStories([
+                    { ...data.story, username: authUser.user.username },
+                    ...stories
+                ]);
             }
 
             setCreateStoryError(error);
