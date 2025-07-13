@@ -1,6 +1,7 @@
 const { APIError } = require('../../common/APIError');
 const StoryModel = require('./story.model');
 const AuthModel = require('../auth/auth.model');
+const CommentModel = require('../comments/comment.model');
 
 class StoryServices {
     static queryStories = async (find = undefined, sort = undefined) => {
@@ -61,7 +62,16 @@ class StoryServices {
         try {
             const storiesFullInfo = await Promise.all(
                 stories.map(async story => {
-                    return this.getStoryUserInfo(story);
+                    const [authUsername, count] = await Promise.all([
+                        AuthModel.findById(story.userID).select('username'),
+                        CommentModel.countDocuments({ storyID: story._id })
+                    ]);
+
+                    return {
+                        ...story.toObject(),
+                        username: authUsername.username,
+                        totalComments: count
+                    };
                 })
             );
 

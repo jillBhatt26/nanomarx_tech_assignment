@@ -109,7 +109,7 @@ const Story = ({ story }) => {
                     </p>
 
                     <p className="border-l-2 border-[#a09f9fb0] font-semibold text-[13px] text-[#cacacab0] pl-2">
-                        {Math.floor(Math.random() * 100)} comments
+                        {story.totalComments} comments
                     </p>
                 </div>
             </div>
