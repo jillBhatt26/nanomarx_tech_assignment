@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import * as yup from 'yup';
 import Story from '../components/Story';
+import Loader from '../components/Loader';
 import { StoryServices } from '../services/story';
 
 const HomePage = () => {
@@ -12,6 +13,7 @@ const HomePage = () => {
     const [createStoryError, setCreateStoryError] = useState(null);
     const [fetchStoriesError, setFetchStoriesError] = useState(null);
     const [stories, setStories] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     // hooks
     const authUser = useSelector(state => state.authReducer.user);
@@ -27,6 +29,8 @@ const HomePage = () => {
             else setFetchStoriesError(error);
         } catch (error) {
             setFetchStoriesError(error);
+        } finally {
+            setLoading(false);
         }
     }, []);
 
@@ -92,6 +96,8 @@ const HomePage = () => {
                 );
         }
     };
+
+    if (loading) return <Loader />;
 
     return (
         <div className="px-5 md:pl-12 mt-5 md:mt-0">
