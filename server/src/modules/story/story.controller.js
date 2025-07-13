@@ -1,5 +1,6 @@
 const { ValidationError } = require('yup');
 const { APIError } = require('../../common/APIError');
+const AuthModel = require('../auth/auth.model');
 const StoryModel = require('./story.model');
 const { createStoryInputSchema } = require('./story.validations');
 
@@ -49,10 +50,30 @@ class StoryControllers {
                 createdAt: -1
             });
 
+            const storiesWithUsername = await Promise.all(
+                stories.map(async story => {
+                    try {
+                        const authUsername = await AuthModel.findById(
+                            story.userID
+                        ).select('username');
+
+                        return {
+                            ...story.toObject(),
+                            username: authUsername.username
+                        };
+                    } catch (error) {
+                        throw new APIError(
+                            500,
+                            error.message ?? 'Failed to fetch stories!'
+                        );
+                    }
+                })
+            );
+
             return res.status(200).json({
                 success: true,
                 data: {
-                    stories
+                    stories: storiesWithUsername
                 }
             });
         } catch (error) {

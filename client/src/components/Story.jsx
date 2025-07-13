@@ -1,9 +1,40 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { BsFillTriangleFill } from 'react-icons/bs';
 import { IoTriangleOutline } from 'react-icons/io5';
 
 const Story = ({ story }) => {
     const [isHovered, setIsHovered] = useState(false);
+    const [timeInfo, setTimeInfo] = useState('24 hours ago');
+
+    // effects
+    useEffect(() => {
+        const storyDate = new Date(story.createdAt);
+
+        const differenceMS = Date.now() - storyDate;
+        const differenceHours = differenceMS / (1000 * 60 * 60); // 1 hour in ms
+
+        // show now upto 10 mins
+        if (differenceMS < 1000 * 60 * 10) {
+            return setTimeInfo('just now');
+        }
+
+        // 1 hour
+        if (
+            differenceHours > 1000 * 60 * 60 * 1 &&
+            differenceHours < 1000 * 60 * 60 * 2
+        ) {
+            return setTimeInfo('1 hour ago');
+        }
+
+        // show hours info till 48 hours
+        if (differenceHours < 1000 * 60 * 60 * 48) {
+            return setTimeInfo(`${Math.floor(differenceHours)} hours ago`);
+        }
+
+        // show days info beyond 48 hours
+        const differenceDays = differenceMS / (1000 * 60 * 60 * 24); // 1 day in ms
+        return setTimeInfo(`${Math.floor(differenceDays)} days ago`);
+    }, [story]);
 
     return (
         <div className="flex space-x-4">
@@ -68,7 +99,7 @@ const Story = ({ story }) => {
                         className="max-w-full h-5 w-5 rounded-full"
                     />
                     <p className="font-semibold text-[13px] text-[#cacacab0]">
-                        via user1 24 hours ago
+                        via {story.username} {timeInfo}
                     </p>
                     <p className="border-l-2 border-[#a09f9fb0] font-semibold text-[13px] text-[#cacacab0] pl-2">
                         caches
