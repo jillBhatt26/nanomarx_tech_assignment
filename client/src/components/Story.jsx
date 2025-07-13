@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { BsFillTriangleFill } from 'react-icons/bs';
@@ -17,12 +17,18 @@ const Story = ({ story }) => {
 
     const navigate = useNavigate();
 
+    // hooks
+    useEffect(() => {
+        setHasVoted(story.hasUserVoted);
+        setTotalVotes(story.totalVotes);
+    }, [story]);
+
     // event handlers
     const handleVote = async () => {
         if (!authUser) return navigate('/login');
 
         try {
-            if (story.hasUserVoted) {
+            if (hasVoted) {
                 // remove vote
                 const removeVoteResData = await VoteServices.removeVote(
                     story._id
@@ -32,8 +38,10 @@ const Story = ({ story }) => {
 
                 if (!success && error) alert(error);
 
-                setTotalVotes(--story.totalVotes);
-                return setHasVoted(false);
+                setTotalVotes(totalVotes - 1);
+                setHasVoted(false);
+
+                return;
             }
 
             // add vote
@@ -43,8 +51,12 @@ const Story = ({ story }) => {
 
             if (!success && error) alert(error);
 
-            setTotalVotes(++story.totalVotes);
-            if (success && data && data.vote) return setHasVoted(true);
+            if (success && data && data.vote) {
+                setTotalVotes(totalVotes + 1);
+                setHasVoted(true);
+
+                return;
+            }
         } catch (error) {
             alert(error.message ?? 'Failed to carry out vote action!');
         }
