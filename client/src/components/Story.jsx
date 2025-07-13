@@ -1,17 +1,36 @@
+import { useState } from 'react';
 import { BsFillTriangleFill } from 'react-icons/bs';
 import { IoTriangleOutline } from 'react-icons/io5';
 
 const Story = ({ story }) => {
+    const [isHovered, setIsHovered] = useState(false);
+
     return (
         <div className="flex space-x-4">
-            <div className="flex flex-col align-middle justify-center text-center">
-                <BsFillTriangleFill
-                    width={5}
-                    height={5}
-                    className="text-amber-700 cursor-pointer mx-auto"
-                />
+            <div className="flex flex-col">
+                <div
+                    className="w-5 h-5 mx-auto flex justify-center"
+                    onMouseEnter={() => setIsHovered(true)}
+                    onMouseLeave={() => setIsHovered(false)}
+                >
+                    {isHovered ? (
+                        <BsFillTriangleFill
+                            width={5}
+                            height={5}
+                            className="text-amber-700 cursor-pointer mx-auto"
+                        />
+                    ) : (
+                        <IoTriangleOutline
+                            width={5}
+                            height={5}
+                            className="text-white cursor-pointer mx-auto"
+                        />
+                    )}
+                </div>
 
-                <p className="text-center">{Math.floor(Math.random() * 200)}</p>
+                <p className="text-center mx-auto">
+                    {Math.floor(Math.random() * 200)}
+                </p>
             </div>
 
             <div className="flex flex-col">
