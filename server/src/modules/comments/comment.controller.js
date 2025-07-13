@@ -75,7 +75,7 @@ class CommentControllers {
             if (error instanceof APIError) return next(error);
 
             return next(
-                new APIError(500, 'Error occurred while fetching stories.')
+                new APIError(500, 'Error occurred while fetching comments.')
             );
         }
     };
@@ -111,7 +111,7 @@ class CommentControllers {
             if (error instanceof APIError) return next(error);
 
             return next(
-                new APIError(500, 'Error occurred while fetching stories.')
+                new APIError(500, 'Error occurred while fetching comments.')
             );
         }
     };
@@ -119,7 +119,7 @@ class CommentControllers {
     static searchComments = async (req, res, next) => {
         try {
             if (!req.query.q)
-                throw new APIError(400, 'Query required to search stories!');
+                throw new APIError(400, 'Query required to search comments!');
 
             const validatedQuery = await commentSearchQuery.validate(req.query);
 

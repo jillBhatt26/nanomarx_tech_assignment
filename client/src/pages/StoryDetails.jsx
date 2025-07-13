@@ -98,6 +98,9 @@ const StoryDetailsPage = () => {
 
             const { success, data, error } = commentResData;
 
+            console.log('comment: ', data.comment);
+            console.log('username: ', authUser.user.username);
+
             if (success && data && data.comment) {
                 setStory({
                     ...story,
@@ -114,6 +117,8 @@ const StoryDetailsPage = () => {
 
             setCreateCommentError(error);
         } catch (error) {
+            console.log('make comment error: ', error);
+
             if (error instanceof yup.ValidationError)
                 setCreateCommentError(error.message);
             else

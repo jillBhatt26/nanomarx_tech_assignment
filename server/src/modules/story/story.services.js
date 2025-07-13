@@ -123,7 +123,8 @@ class StoryServices {
                     }
                 },
                 { $match: { comments: { $ne: [] } } },
-                { $sort: { createdAt: -1 } }
+                { $addFields: { commentCount: { $size: '$comments' } } },
+                { $sort: { commentCount: -1 } }
             ]);
 
             // get full info of the stories
