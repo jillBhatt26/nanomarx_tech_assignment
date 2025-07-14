@@ -35,7 +35,6 @@ const SearchPage = () => {
     }, [loading, searchError]);
 
     useEffect(() => {
-        setInputQuery('');
         setHasFinishedSearch(false);
     }, [searchWhere]);
 
