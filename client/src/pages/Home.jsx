@@ -68,9 +68,19 @@ const HomePage = () => {
     const handleCreateStory = async e => {
         e.preventDefault();
 
-        const tagsArray = inputTags.split(', ');
-
         try {
+            let tagsArray = [];
+
+            if (inputTags.length) {
+                tagsArray = inputTags
+                    .trim()
+                    .split(', ')
+                    .map(item => item.trim())
+                    .filter(item => item !== '');
+            }
+
+            setCreateStoryError(null);
+
             const createStoryInputs = await createStoryInputSchema.validate({
                 title: inputTitle,
                 url: inputURL,
