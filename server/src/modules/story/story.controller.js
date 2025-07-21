@@ -193,7 +193,7 @@ class StoryControllers {
             const upvotedStoryIDs = userUpvotedStories.map(s => s.storyID);
 
             // getting all the stories with upvoted tags and removing the upvoted stories
-            const stories = await StoryModel.find({
+            const stories = await StoryServices.queryStories({
                 tags: {
                     $in: storiesTags // story should have at least one tag from the array
                 },
