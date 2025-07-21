@@ -1,6 +1,9 @@
 const { ValidationError } = require('yup');
 const { APIError } = require('../../common/APIError');
 const { StoryServices } = require('./story.services');
+const UpvoteModel = require('../vote/vote.model');
+const StoryModel = require('./story.model');
+
 const { createStoryInputSchema } = require('./story.validations');
 
 class StoryControllers {
@@ -145,6 +148,81 @@ class StoryControllers {
 
             return next(
                 new APIError(500, 'Error occurred while searching stories.')
+            );
+        }
+    };
+
+    /**
+     * TODOs:
+     * -> Check auth user (done)
+     * -> Fetch stories upvoted by the user (done)
+     * -> Collect all the tags of the stories (done)
+     * -> Query stories by the tags and not the same stories (done)
+     * -> Return stories in response (done)
+     */
+
+    static fetchForYouStories = async (req, res, next) => {
+        try {
+            if (!req.session.userID || !req.user)
+                throw new APIError(401, 'Unauthorized request!');
+
+            // get user votes
+            const userUpvotedStories = await UpvoteModel.find({
+                userID: req.session.userID
+            });
+
+            // get tags of upvoted stories
+            let storiesTags = await Promise.all(
+                userUpvotedStories.map(async s => {
+                    const { tags } = await StoryModel.findOne({
+                        _id: s.storyID,
+                        userID: req.session.userID
+                    }).select('tags');
+
+                    // no clue what was the issue earlier
+                    return tags;
+                })
+            );
+
+            // flattening out the tags and removing duplicate tags using Set data structure
+            storiesTags = Array.from(
+                new Set(storiesTags.reduce((acc, cur) => acc.concat(cur), []))
+            );
+
+            // getting storyIDs of upvoted stories
+            const upvotedStoryIDs = userUpvotedStories.map(s => s.storyID);
+
+            // getting all the stories with upvoted tags and removing the upvoted stories
+            const stories = await StoryModel.find({
+                tags: {
+                    $in: storiesTags // story should have at least one tag from the array
+                },
+                _id: {
+                    $nin: upvotedStoryIDs // story shouldn't have been upvoted by the user
+                },
+                userID: {
+                    $ne: req.session.userID // (had not been actively discussed but) don't recommend the user's own stories
+                }
+            });
+
+            const storiesWithFullInfo =
+                await StoryServices.fetchStoriesFullInfo(stories);
+
+            return res.status(200).json({
+                success: true,
+                data: {
+                    stories: storiesWithFullInfo
+                }
+            });
+        } catch (error) {
+            if (error instanceof APIError) return next(error);
+
+            return next(
+                new APIError(
+                    500,
+                    error.message ??
+                        'Error occurred while fetching "for you" stories.'
+                )
             );
         }
     };

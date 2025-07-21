@@ -12,6 +12,8 @@ storyRouter.get('/active', StoryControllers.fetchStoriesActive);
 
 storyRouter.get('/search', StoryControllers.searchStories);
 
+storyRouter.get('/you', authMiddleware, StoryControllers.fetchForYouStories);
+
 storyRouter.get('/:id', StoryControllers.fetchStoryID);
 
 module.exports = storyRouter;

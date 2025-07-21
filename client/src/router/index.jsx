@@ -12,6 +12,7 @@ import LoginPage from '../pages/Login';
 import SignupPage from '../pages/Signup';
 import StoryDetailsPage from '../pages/StoryDetails';
 import ErrorPage from '../pages/Error';
+import ForYouPage from '../pages/ForYou';
 
 const AppRouter = () => {
     return (
@@ -25,6 +26,7 @@ const AppRouter = () => {
                         <Route path="/recent" element={<RecentPage />} />
                         <Route path="/comments" element={<CommentPage />} />
                         <Route path="/search" element={<SearchPage />} />
+                        <Route path="/you" element={<ForYouPage />} />
                         <Route path="/s/:id" element={<StoryDetailsPage />} />
                     </Route>
 

@@ -70,6 +70,16 @@ const Navbar = () => {
                 >
                     <li>Search</li>
                 </Link>
+                <Link
+                    to="/you"
+                    className={`pb-1 ${
+                        location.pathname === '/you'
+                            ? 'border-b-3 border-orange-700'
+                            : 'border-b-3 border-transparent'
+                    }`}
+                >
+                    <li>For you</li>
+                </Link>
             </ul>
 
             {/* Login */}
