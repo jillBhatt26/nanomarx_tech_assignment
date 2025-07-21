@@ -171,15 +171,33 @@ class StoryControllers {
                 userID: req.session.userID
             });
 
+            // check if user has not upvoted anything
+            if (!userUpvotedStories.length) {
+                // Nothing specific to return. Hence return empty array / random stories
+                const stories = await StoryModel.find({})
+                    .sort({
+                        createdAt: -1
+                    })
+                    .limit(5);
+
+                const storiesFullInfo =
+                    await StoryServices.fetchStoriesFullInfo(stories);
+
+                return res.status(200).json({
+                    success: true,
+                    data: {
+                        stories: storiesFullInfo
+                    }
+                });
+            }
+
             // get tags of upvoted stories
             let storiesTags = await Promise.all(
                 userUpvotedStories.map(async s => {
                     const { tags } = await StoryModel.findOne({
-                        _id: s.storyID,
-                        userID: req.session.userID
+                        _id: s.storyID
                     }).select('tags');
 
-                    // no clue what was the issue earlier
                     return tags;
                 })
             );
