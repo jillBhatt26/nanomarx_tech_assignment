@@ -13,6 +13,7 @@ const SearchPage = () => {
     const [searchWhere, setSearchWhere] = useState('stories');
     const [hasFinishedSearch, setHasFinishedSearch] = useState(false);
     const [results, setResults] = useState([]);
+    const [shouldRenderResults, setShouldRenderResults] = useState(false);
 
     const searchInputsSchema = useMemo(
         () =>
@@ -35,13 +36,14 @@ const SearchPage = () => {
     }, [loading, searchError]);
 
     useEffect(() => {
-        setHasFinishedSearch(false);
-    }, [searchWhere]);
+        setShouldRenderResults(hasFinishedSearch && results.length > 0);
+    }, [hasFinishedSearch, results]);
 
     useEffect(() => {
         setResults([]);
         setHasFinishedSearch(false);
-    }, [inputQuery]);
+        setShouldRenderResults(false);
+    }, [searchWhere, inputQuery]);
 
     // event handlers
     const handleSearch = async e => {
@@ -50,6 +52,7 @@ const SearchPage = () => {
 
         try {
             setLoading(true);
+            setResults([]);
 
             const searchInputs = await searchInputsSchema.validate({
                 q: inputQuery
@@ -151,15 +154,13 @@ const SearchPage = () => {
                 </p>
             )}
 
-            {hasFinishedSearch &&
-                searchWhere === 'stories' &&
-                results.length > 0 && (
-                    <ul className="mt-5">
-                        {results.map((result, idx) => (
-                            <Story key={result._id ?? idx} story={result} />
-                        ))}
-                    </ul>
-                )}
+            {shouldRenderResults && searchWhere === 'stories' && (
+                <ul className="mt-5">
+                    {results.map((result, idx) => (
+                        <Story key={result._id ?? idx} story={result} />
+                    ))}
+                </ul>
+            )}
 
             {hasFinishedSearch &&
                 searchWhere === 'comments' &&
