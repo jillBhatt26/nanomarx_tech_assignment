@@ -36,14 +36,15 @@ const SearchPage = () => {
     }, [loading, searchError]);
 
     useEffect(() => {
-        setShouldRenderResults(hasFinishedSearch && results.length > 0);
-    }, [hasFinishedSearch, results]);
-
-    useEffect(() => {
         setResults([]);
         setHasFinishedSearch(false);
-        setShouldRenderResults(false);
     }, [searchWhere, inputQuery]);
+
+    useEffect(() => {
+        setHasFinishedSearch(false);
+        setShouldRenderResults(false);
+        setResults([]);
+    }, [searchWhere]);
 
     // event handlers
     const handleSearch = async e => {
