@@ -13,7 +13,6 @@ const SearchPage = () => {
     const [searchWhere, setSearchWhere] = useState('stories');
     const [hasFinishedSearch, setHasFinishedSearch] = useState(false);
     const [results, setResults] = useState([]);
-    // const [shouldRenderResults, setShouldRenderResults] = useState(false);
 
     const searchInputsSchema = useMemo(
         () =>
@@ -42,7 +41,6 @@ const SearchPage = () => {
 
     useEffect(() => {
         setHasFinishedSearch(false);
-        // setShouldRenderResults(false);
         setResults([]);
     }, [searchWhere]);
 
@@ -52,7 +50,6 @@ const SearchPage = () => {
 
         setResults([]);
         setHasFinishedSearch(false);
-        // setShouldRenderResults(false);
 
         setSearchWhere(e.target.value);
     };
@@ -78,7 +75,6 @@ const SearchPage = () => {
 
                 if (success && data && data.stories) {
                     setResults(data.stories);
-                    // setShouldRenderResults(true);
                 }
 
                 setSearchError(error);
@@ -93,7 +89,6 @@ const SearchPage = () => {
 
                 if (success && data && data.comments) {
                     setResults(data.comments);
-                    // setShouldRenderResults(true);
                 }
 
                 setSearchError(error);
@@ -142,12 +137,6 @@ const SearchPage = () => {
             <p className="my-5">Search:</p>
             <div className="flex space-x-5">
                 <label className="space-x-1">
-                    {/* <input
-                        type="radio"
-                        value="stories"
-                        checked={searchWhere === 'stories'}
-                        onChange={e => setSearchWhere(e.target.value)}
-                    /> */}
                     <input
                         type="radio"
                         value="stories"
@@ -193,48 +182,6 @@ const SearchPage = () => {
                     )}
                 </>
             )}
-
-            {/* {hasFinishedSearch && (
-                <p className="mt-5">
-                    {results.length} results for {inputQuery}
-                </p>
-            )}
-
-            {shouldRenderResults && searchWhere === 'stories' && (
-                <ul className="mt-5">
-                    {results.map((result, idx) => (
-                        <Story key={result._id ?? idx} story={result} />
-                    ))}
-                </ul>
-            )}
-
-            {shouldRenderResults && searchWhere === 'comments' && (
-                <ul className="mt-5">
-                    {results.map((result, idx) => (
-                        <Comment key={result._id ?? idx} comment={result} />
-                    ))}
-                </ul>
-            )} */}
-
-            {/* {hasFinishedSearch &&
-                searchWhere === 'stories' &&
-                results.length > 0 && (
-                    <ul className="mt-5">
-                        {results.map((result, idx) => (
-                            <Story key={result._id ?? idx} story={result} />
-                        ))}
-                    </ul>
-                )} */}
-
-            {/* {hasFinishedSearch &&
-                searchWhere === 'comments' &&
-                results.length > 0 && (
-                    <ul className="mt-5">
-                        {results.map((result, idx) => (
-                            <Comment key={result._id ?? idx} comment={result} />
-                        ))}
-                    </ul>
-                )} */}
         </div>
     );
 };
