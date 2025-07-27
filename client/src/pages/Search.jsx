@@ -13,7 +13,7 @@ const SearchPage = () => {
     const [searchWhere, setSearchWhere] = useState('stories');
     const [hasFinishedSearch, setHasFinishedSearch] = useState(false);
     const [results, setResults] = useState([]);
-    const [shouldRenderResults, setShouldRenderResults] = useState(false);
+    // const [shouldRenderResults, setShouldRenderResults] = useState(false);
 
     const searchInputsSchema = useMemo(
         () =>
@@ -42,11 +42,21 @@ const SearchPage = () => {
 
     useEffect(() => {
         setHasFinishedSearch(false);
-        setShouldRenderResults(false);
+        // setShouldRenderResults(false);
         setResults([]);
     }, [searchWhere]);
 
     // event handlers
+    const handleSearchWhereChange = e => {
+        e.preventDefault();
+
+        setResults([]);
+        setHasFinishedSearch(false);
+        // setShouldRenderResults(false);
+
+        setSearchWhere(e.target.value);
+    };
+
     const handleSearch = async e => {
         e.preventDefault();
         setHasFinishedSearch(false);
@@ -68,7 +78,7 @@ const SearchPage = () => {
 
                 if (success && data && data.stories) {
                     setResults(data.stories);
-                    setShouldRenderResults(true);
+                    // setShouldRenderResults(true);
                 }
 
                 setSearchError(error);
@@ -83,7 +93,7 @@ const SearchPage = () => {
 
                 if (success && data && data.comments) {
                     setResults(data.comments);
-                    setShouldRenderResults(true);
+                    // setShouldRenderResults(true);
                 }
 
                 setSearchError(error);
@@ -132,11 +142,17 @@ const SearchPage = () => {
             <p className="my-5">Search:</p>
             <div className="flex space-x-5">
                 <label className="space-x-1">
-                    <input
+                    {/* <input
                         type="radio"
                         value="stories"
                         checked={searchWhere === 'stories'}
                         onChange={e => setSearchWhere(e.target.value)}
+                    /> */}
+                    <input
+                        type="radio"
+                        value="stories"
+                        checked={searchWhere === 'stories'}
+                        onChange={handleSearchWhereChange}
                     />
                     <span>Stories</span>
                 </label>
@@ -145,7 +161,7 @@ const SearchPage = () => {
                         type="radio"
                         value="comments"
                         checked={searchWhere === 'comments'}
-                        onChange={e => setSearchWhere(e.target.value)}
+                        onChange={handleSearchWhereChange}
                     />
                     <span>Comments</span>
                 </label>
@@ -157,7 +173,7 @@ const SearchPage = () => {
                         {results.length} results for {inputQuery}
                     </p>
 
-                    {searchWhere === 'stories' && shouldRenderResults && (
+                    {searchWhere === 'stories' && results.length > 0 && (
                         <ul className="mt-5">
                             {results.map((result, idx) => (
                                 <Story key={result._id ?? idx} story={result} />
@@ -165,7 +181,7 @@ const SearchPage = () => {
                         </ul>
                     )}
 
-                    {searchWhere === 'comments' && shouldRenderResults && (
+                    {searchWhere === 'comments' && results.length > 0 && (
                         <ul className="mt-5">
                             {results.map((result, idx) => (
                                 <Comment
@@ -199,6 +215,16 @@ const SearchPage = () => {
                     ))}
                 </ul>
             )} */}
+
+            {/* {hasFinishedSearch &&
+                searchWhere === 'stories' &&
+                results.length > 0 && (
+                    <ul className="mt-5">
+                        {results.map((result, idx) => (
+                            <Story key={result._id ?? idx} story={result} />
+                        ))}
+                    </ul>
+                )} */}
 
             {/* {hasFinishedSearch &&
                 searchWhere === 'comments' &&
