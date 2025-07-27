@@ -68,6 +68,7 @@ const SearchPage = () => {
 
                 if (success && data && data.stories) {
                     setResults(data.stories);
+                    setShouldRenderResults(true);
                 }
 
                 setSearchError(error);
@@ -82,6 +83,7 @@ const SearchPage = () => {
 
                 if (success && data && data.comments) {
                     setResults(data.comments);
+                    setShouldRenderResults(true);
                 }
 
                 setSearchError(error);
@@ -150,6 +152,33 @@ const SearchPage = () => {
             </div>
 
             {hasFinishedSearch && (
+                <>
+                    <p className="mt-5">
+                        {results.length} results for {inputQuery}
+                    </p>
+
+                    {searchWhere === 'stories' && shouldRenderResults && (
+                        <ul className="mt-5">
+                            {results.map((result, idx) => (
+                                <Story key={result._id ?? idx} story={result} />
+                            ))}
+                        </ul>
+                    )}
+
+                    {searchWhere === 'comments' && shouldRenderResults && (
+                        <ul className="mt-5">
+                            {results.map((result, idx) => (
+                                <Comment
+                                    key={result._id ?? idx}
+                                    comment={result}
+                                />
+                            ))}
+                        </ul>
+                    )}
+                </>
+            )}
+
+            {/* {hasFinishedSearch && (
                 <p className="mt-5">
                     {results.length} results for {inputQuery}
                 </p>
@@ -163,7 +192,15 @@ const SearchPage = () => {
                 </ul>
             )}
 
-            {hasFinishedSearch &&
+            {shouldRenderResults && searchWhere === 'comments' && (
+                <ul className="mt-5">
+                    {results.map((result, idx) => (
+                        <Comment key={result._id ?? idx} comment={result} />
+                    ))}
+                </ul>
+            )} */}
+
+            {/* {hasFinishedSearch &&
                 searchWhere === 'comments' &&
                 results.length > 0 && (
                     <ul className="mt-5">
@@ -171,7 +208,7 @@ const SearchPage = () => {
                             <Comment key={result._id ?? idx} comment={result} />
                         ))}
                     </ul>
-                )}
+                )} */}
         </div>
     );
 };
